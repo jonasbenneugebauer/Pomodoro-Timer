@@ -1,4 +1,4 @@
-package PomodoroTimer;
+package PomodoroTimer.src;
 
     public class Pomodoro {
     private int workDuration;
