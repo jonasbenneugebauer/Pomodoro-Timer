@@ -4,35 +4,46 @@ package PomodoroTimer.src;
     private int workDuration;
     private int breakDuration;
     private int cycles;
+    private PomodoroGUI gui;
 
-    public Pomodoro(int workDuration, int breakDuration, int cycles) {
+    public Pomodoro(int workDuration, int breakDuration, int cycles, PomodoroGUI gui) {
         this.workDuration = workDuration;
         this.breakDuration = breakDuration;
         this.cycles = cycles;
+        this.gui = gui;
     }
 
     public void start() {
-        for (int i = 0; i < cycles; i++) {
-            System.out.println("Cycle " + (i + 1) + ": Work for " + workDuration + " minutes.");
-            // Simulate work duration
-            try {
-                Thread.sleep(workDuration * 60 * 1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println("Cycle " + (i + 1) + ": Take a break for " + breakDuration + " minutes.");
-            // Simulate break duration
-            try {
-                Thread.sleep(breakDuration * 60 * 1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    } 
 
-    public static void main(String[] args) {
-        Pomodoro pomodoro = new Pomodoro(25, 5, 4);
-        pomodoro.start();
+        for(int i = 0; i < cycles; i++) {
+          int totalSeconds = workDuration * 60;
+   while(totalSeconds > 0) {
+        try {
+            Thread.sleep(1000);
+            totalSeconds--;
+            int minutes = totalSeconds / 60;
+            int seconds = totalSeconds % 60;
+            gui.updateLabel(String.format("%02d:%02d", minutes, seconds));
+        } catch (InterruptedException e) {
+           System.out.println("Timer interrupted");
+           return;
+        }
+    }
+    int totalBreakSeconds = breakDuration * 60; 
+    while(totalBreakSeconds > 0) {
+        try {
+            Thread.sleep(1000);
+            totalBreakSeconds--;
+            int minutes = totalBreakSeconds / 60;
+            int seconds = totalBreakSeconds % 60;
+            gui.updateLabel(String.format("%02d:%02d", minutes, seconds));
+        } catch (InterruptedException e) {
+           System.out.println("Timer interrupted");
+           return;
+        }
+       
+    }
+}
     }
 
     
