@@ -7,6 +7,7 @@ public class PomodoroGUI {
 
     private JFrame frame;
     private JLabel label;
+    private JLabel statusLabel;
     private JButton startButton;
     private JButton stopButton;
     private Pomodoro pomodoro;
@@ -16,6 +17,10 @@ public class PomodoroGUI {
         frame = new JFrame("Pomodoro Timer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 200);
+
+        statusLabel = new JLabel("Ready", SwingConstants.CENTER);
+        statusLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        statusLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         label = new JLabel("00:00", SwingConstants.CENTER);
         label.setFont(new Font("Arial", Font.BOLD, 48));
@@ -32,6 +37,7 @@ public class PomodoroGUI {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.add(Box.createVerticalGlue());
+        panel.add(statusLabel);
         panel.add(label);
         panel.add(Box.createVerticalStrut(20));
         panel.add(startButton);
@@ -50,7 +56,7 @@ public void startTimer() {
     if (timerThread != null && timerThread.isAlive()) {
         return; // Timer läuft schon
     }
-    pomodoro = new Pomodoro(25, 5, 2, this); // Neues Pomodoro-Objekt!
+    pomodoro = new Pomodoro(1, 1, 2, this); // Neues Pomodoro-Objekt!
     timerThread = new Thread(() -> pomodoro.start());
     timerThread.start();
 }
@@ -60,6 +66,10 @@ public void stopTimer() {
         timerThread.interrupt();
         updateLabel("00:00");
     }
+}
+
+public void updateStatus(String status){
+    SwingUtilities.invokeLater(() -> statusLabel.setText(status));
 }
 
    

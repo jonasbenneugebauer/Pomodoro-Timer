@@ -1,6 +1,8 @@
 package PomodoroTimer.src;
 
-    public class Pomodoro {
+import java.awt.Toolkit;
+
+public class Pomodoro {
     private int workDuration;
     private int breakDuration;
     private int cycles;
@@ -17,6 +19,8 @@ package PomodoroTimer.src;
 
         for(int i = 0; i < cycles; i++) {
           int totalSeconds = workDuration * 60;
+          Toolkit.getDefaultToolkit().beep();
+          gui.updateStatus("Working Time!");
    while(totalSeconds > 0) {
         try {
             Thread.sleep(1000);
@@ -28,8 +32,11 @@ package PomodoroTimer.src;
            System.out.println("Timer interrupted");
            return;
         }
+       
     }
-    int totalBreakSeconds = breakDuration * 60; 
+    int totalBreakSeconds = breakDuration * 60;
+    Toolkit.getDefaultToolkit().beep();
+    gui.updateStatus("Break Time!"); 
     while(totalBreakSeconds > 0) {
         try {
             Thread.sleep(1000);
