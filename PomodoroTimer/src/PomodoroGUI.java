@@ -17,6 +17,7 @@ public class PomodoroGUI {
         frame = new JFrame("Pomodoro Timer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 200);
+        frame.getContentPane().setBackground(new Color(45, 52, 54));
 
         statusLabel = new JLabel("Ready", SwingConstants.CENTER);
         statusLabel.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -25,6 +26,8 @@ public class PomodoroGUI {
         label = new JLabel("00:00", SwingConstants.CENTER);
         label.setFont(new Font("Arial", Font.BOLD, 48));
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        label.setForeground(Color.WHITE);  // Weiße Schrift
+        statusLabel.setForeground(new Color(178, 190, 195));  // Hellgrau
 
         startButton = new JButton("Start");
         stopButton = new JButton("Stop");
@@ -33,6 +36,16 @@ public class PomodoroGUI {
         startButton.addActionListener(e -> startTimer());
         stopButton.addActionListener(e -> stopTimer());
         stopButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        startButton.setBackground(new Color(46, 213, 115));  // Grün
+        startButton.setForeground(Color.BLACK);  // Schwarze Schrift
+        startButton.setFocusPainted(false);  // Kein Fokus-Rahmen
+        startButton.setFont(new Font("Arial", Font.BOLD, 16)); 
+        
+        stopButton.setBackground(new Color(255, 71, 87));  // Rot
+        stopButton.setForeground(Color.BLACK);
+        stopButton.setFocusPainted(false);
+        stopButton.setFont(new Font("Arial", Font.BOLD, 16));
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -44,6 +57,7 @@ public class PomodoroGUI {
         panel.add(Box.createVerticalStrut(10));
         panel.add(stopButton);
         panel.add(Box.createVerticalGlue());
+        panel.setBackground(new Color(45, 52, 54));
 
         frame.getContentPane().add(panel);
         frame.setVisible(true);
