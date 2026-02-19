@@ -96,6 +96,7 @@ public void updateStatus(String status){
    
     public static void main(String[] args) {
         new PomodoroGUI();
+        System.out.println("Pomodoro Timer gestartet");
     }
 
     public void updateCircle(int secondsLeft) {
