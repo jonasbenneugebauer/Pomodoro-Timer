@@ -12,6 +12,7 @@ public class PomodoroGUI {
     private JButton stopButton;
     private Pomodoro pomodoro;
     private Thread timerThread;
+    private CircleTimerPanel circlePanel;
 
     public PomodoroGUI() {
         frame = new JFrame("Pomodoro Timer");
@@ -32,6 +33,9 @@ public class PomodoroGUI {
         startButton = new JButton("Start");
         stopButton = new JButton("Stop");
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        circlePanel = new CircleTimerPanel(25 * 60); // 25 Minuten in Sekunden
+        circlePanel.setPreferredSize(new Dimension(200, 200));
 
         startButton.addActionListener(e -> startTimer());
         stopButton.addActionListener(e -> stopTimer());
@@ -58,6 +62,7 @@ public class PomodoroGUI {
         panel.add(stopButton);
         panel.add(Box.createVerticalGlue());
         panel.setBackground(new Color(45, 52, 54));
+        panel.add(circlePanel);
 
         frame.getContentPane().add(panel);
         frame.setVisible(true);
@@ -67,10 +72,12 @@ public void updateLabel(String time) {
 }
 
 public void startTimer() {
-    if (timerThread != null && timerThread.isAlive()) {
-        return; // Timer läuft schon
+    if(timerThread != null && timerThread.isAlive()) {
+        return; // Timer läuft bereits
     }
-    pomodoro = new Pomodoro(1, 1, 2, this); // Neues Pomodoro-Objekt!
+    pomodoro = new Pomodoro(25, 5, 4, this);
+    timerThread = new Thread(() -> pomodoro.start());
+    circlePanel.setTotalSeconds(25 * 60); // Setze die Gesamtzeit für den Kreis
     timerThread = new Thread(() -> pomodoro.start());
     timerThread.start();
 }
@@ -90,5 +97,12 @@ public void updateStatus(String status){
     public static void main(String[] args) {
         new PomodoroGUI();
     }
+
+    public void updateCircle(int secondsLeft) {
+        SwingUtilities.invokeLater(() -> circlePanel.updateTime(secondsLeft));
+    }
     
+    public void setCircleTotal(int total) {
+        SwingUtilities.invokeLater(() -> circlePanel.setTotalSeconds(total));
+    }
 }
