@@ -1,4 +1,4 @@
-package PomodoroTimer.src;
+package src;
 
 import java.awt.Toolkit;
 import java.time.LocalDate;
