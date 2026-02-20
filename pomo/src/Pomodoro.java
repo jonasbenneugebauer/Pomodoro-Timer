@@ -1,4 +1,3 @@
-package src;
 
 import java.awt.Toolkit;
 import java.time.LocalDate;
@@ -30,7 +29,7 @@ public class Pomodoro {
             totalSeconds--;
             int minutes = totalSeconds / 60;
             int seconds = totalSeconds % 60;
-            gui.updateLabel(String.format("%02d:%02d", minutes, secaonds));
+            gui.updateLabel(String.format("%02d:%02d", minutes, seconds));
             gui.updateCircle(totalSeconds);
         } catch (InterruptedException e) {
            System.out.println("Timer interrupted");
@@ -58,5 +57,7 @@ public class Pomodoro {
     }
          logger.logPomodoro(LocalDate.now().toString(), (i+1), workDuration);
 }
+}
+
 }
 
