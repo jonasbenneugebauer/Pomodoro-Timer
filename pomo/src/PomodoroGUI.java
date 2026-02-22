@@ -16,7 +16,7 @@ public class PomodoroGUI {
     public PomodoroGUI() {
         frame = new JFrame("Pomodoro Timer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(300, 200);
+        frame.setSize(1080, 720);
         frame.getContentPane().setBackground(new Color(45, 52, 54));
 
         statusLabel = new JLabel("Ready", SwingConstants.CENTER);
@@ -36,7 +36,15 @@ public class PomodoroGUI {
         circlePanel = new CircleTimerPanel(25 * 60); // 25 Minuten in Sekunden
         circlePanel.setPreferredSize(new Dimension(200, 200));
 
-        startButton.addActionListener(e -> startTimer());
+        startButton.addActionListener(e -> {
+            try {
+                startTimer();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                // show a dialog so the user sees the error
+                JOptionPane.showMessageDialog(frame, "Fehler beim Starten des Timers:\n" + ex.toString(), "Fehler", JOptionPane.ERROR_MESSAGE);
+            }
+        });
         stopButton.addActionListener(e -> stopTimer());
         stopButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -75,9 +83,17 @@ public void startTimer() {
         return; // Timer läuft bereits
     }
     pomodoro = new Pomodoro(25, 5, 4, this);
-    timerThread = new Thread(() -> pomodoro.start());
     circlePanel.setTotalSeconds(25 * 60); // Setze die Gesamtzeit für den Kreis
-    timerThread = new Thread(() -> pomodoro.start());
+    timerThread = new Thread(() -> {
+        try {
+            pomodoro.start();
+        } catch (Throwable t) {
+            // Log any error that happens in the timer thread
+            t.printStackTrace();
+            SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame, "Fehler im Timer-Thread:\n" + t.toString(), "Fehler", JOptionPane.ERROR_MESSAGE));
+        }
+    });
+    timerThread.setDaemon(true);
     timerThread.start();
 }
 

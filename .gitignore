@@ -1,0 +1,6 @@
+# Ignore Java bytecode
+*.class
+
+# Build output
+pomo/bin/
+out/

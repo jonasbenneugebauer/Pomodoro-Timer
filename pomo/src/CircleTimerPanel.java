@@ -26,12 +26,10 @@ protected void paintComponent(Graphics g) {
     int x = (getWidth() - diameter) / 2;
     int y = (getHeight() - diameter) / 2;
 
-    // 1. Hellrosa Hintergrund (gesamte Stunde)
-    g.setColor(new Color(255, 200, 200));
+    g.setColor(new Color(100, 100, 255));
     g.fillOval(x, y, diameter, diameter);
 
-    // 2. Dunkelrot (verbleibende Pomodoro-Zeit)
-    g.setColor(new Color(255, 100, 100));
+    g.setColor(new Color(50, 50, 255));
     int remainingAngle = (int) (((double) secondsLeft / 3600.0) * 360);
     g.fillArc(x, y, diameter, diameter, 90, -remainingAngle);  // GEGEN Uhrzeigersinn
 
