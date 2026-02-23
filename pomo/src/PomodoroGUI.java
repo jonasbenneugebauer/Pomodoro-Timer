@@ -5,8 +5,6 @@ import java.awt.*;
 public class PomodoroGUI {  
 
     private JFrame frame;
-    private JLabel label;
-    private JLabel statusLabel;
     private JButton startButton;
     private JButton stopButton;
     private Pomodoro pomodoro;
@@ -14,27 +12,18 @@ public class PomodoroGUI {
     private CircleTimerPanel circlePanel;
 
     public PomodoroGUI() {
-        frame = new JFrame("Pomodoro Timer");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1080, 720);
-        frame.getContentPane().setBackground(new Color(45, 52, 54));
-
-        statusLabel = new JLabel("Ready", SwingConstants.CENTER);
-        statusLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-        statusLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        label = new JLabel("00:00", SwingConstants.CENTER);
-        label.setFont(new Font("Arial", Font.BOLD, 48));
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
-        label.setForeground(Color.WHITE);  // Weiße Schrift
-        statusLabel.setForeground(new Color(178, 190, 195));  // Hellgrau
+    frame = new JFrame("Pomodoro Timer");
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    // we'll use pack() later so don't set a fixed size
+    frame.getContentPane().setBackground(new Color(45, 52, 54));
 
         startButton = new JButton("Start");
         stopButton = new JButton("Stop");
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        circlePanel = new CircleTimerPanel(25 * 60); // 25 Minuten in Sekunden
-        circlePanel.setPreferredSize(new Dimension(200, 200));
+    circlePanel = new CircleTimerPanel(25 * 60); // 25 Minuten in Sekunden
+    // make the circle slightly smaller but still prominent
+    circlePanel.setPreferredSize(new Dimension(500, 500));
 
         startButton.addActionListener(e -> {
             try {
@@ -58,25 +47,22 @@ public class PomodoroGUI {
         stopButton.setFocusPainted(false);
         stopButton.setFont(new Font("Arial", Font.BOLD, 16));
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.add(Box.createVerticalGlue());
-        panel.add(statusLabel);
-        panel.add(label);
-        panel.add(Box.createVerticalStrut(20));
-        panel.add(startButton);
-        panel.add(Box.createVerticalStrut(10));
-        panel.add(stopButton);
-        panel.add(Box.createVerticalGlue());
-        panel.setBackground(new Color(45, 52, 54));
-        panel.add(circlePanel);
+        // Layout: circle centered, buttons below
+        frame.getContentPane().setLayout(new BorderLayout());
+        frame.getContentPane().add(circlePanel, BorderLayout.CENTER);
 
-        frame.getContentPane().add(panel);
+        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        buttonsPanel.setBackground(new Color(45, 52, 54));
+        buttonsPanel.add(startButton);
+        buttonsPanel.add(stopButton);
+
+        frame.getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
+
+        frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-public void updateLabel(String time) {
-    SwingUtilities.invokeLater(() -> label.setText(time));
-}
+// time is shown inside the circle; updateLabel removed
 
 public void startTimer() {
     if(timerThread != null && timerThread.isAlive()) {
@@ -100,12 +86,9 @@ public void startTimer() {
 public void stopTimer() {
     if(timerThread != null && timerThread.isAlive()) {
         timerThread.interrupt();
-        updateLabel("00:00");
+        // reset circle to zero
+        SwingUtilities.invokeLater(() -> circlePanel.updateTime(0));
     }
-}
-
-public void updateStatus(String status){
-    SwingUtilities.invokeLater(() -> statusLabel.setText(status));
 }
 
    
