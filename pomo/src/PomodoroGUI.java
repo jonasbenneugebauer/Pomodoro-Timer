@@ -14,6 +14,7 @@ public class PomodoroGUI {
     private JButton stopButton;
     private JPanel panel;
     private Pomodoro pomodoro;
+    private Thread timerThread;
 
     public PomodoroGUI() {
         frame = new JFrame("Pomodoro Timer"); 
@@ -53,12 +54,21 @@ public class PomodoroGUI {
     }
 
     public void startTimer() {
+        if(timerThread != null && timerThread.isAlive()) {
+            
+            System.out.println("Timer is already running.");
+            return;
+        }
         System.out.println("Timer started");
-        new Thread(() -> pomodoro.start()).start();
+        timerThread = new Thread(() -> pomodoro.start());
+        timerThread.start();
     }
 
     public void stopTimer() {
         System.out.println("Timer stopped");
+        if(timerThread != null && timerThread.isAlive()) {
+            timerThread.interrupt();
+        }
     }
     public void updateLabel(String time) {
         label.setText(time);
