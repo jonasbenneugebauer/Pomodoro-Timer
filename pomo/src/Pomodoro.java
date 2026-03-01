@@ -1,11 +1,13 @@
 public class Pomodoro {
    private int totalSeconds;
    private int minutes;
+   private PomodoroGUI gui;
 
 
     public Pomodoro (int seconds, int minutes){
         this.totalSeconds = seconds + minutes * 60;
         this.minutes = totalSeconds / 60;
+        this.gui = gui;
     }
 public void start(){
 

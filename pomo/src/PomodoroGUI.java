@@ -13,6 +13,7 @@ public class PomodoroGUI {
     private JButton startButton;
     private JButton stopButton;
     private JPanel panel;
+    private Pomodoro pomodoro;
 
     public PomodoroGUI() {
         frame = new JFrame("Pomodoro Timer"); 
@@ -20,11 +21,12 @@ public class PomodoroGUI {
         startButton = new JButton("Start");
         stopButton = new JButton("Stop");
         panel = new JPanel();
+        pomodoro = new Pomodoro(0, 25); // Initialize with 25 minutes
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         stopButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         startButton.addActionListener(e -> startTimer()); 
             // Start the Pomodoro timer
         
@@ -52,6 +54,7 @@ public class PomodoroGUI {
 
     public void startTimer() {
         System.out.println("Timer started");
+        pomodoro.start();
     }
 
     public void stopTimer() {
