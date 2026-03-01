@@ -24,6 +24,14 @@ public class PomodoroGUI {
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         stopButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        startButton.addActionListener(e -> startTimer()); 
+            // Start the Pomodoro timer
+        
+        stopButton.addActionListener(e -> stopTimer()); 
+            // Stop the Pomodoro timer
+        
+
         panel.add(Box.createVerticalGlue()); // Add some space at the top
         panel.add(label);
         panel.add(Box.createVerticalStrut(20)); // Add some space between label and buttons
@@ -41,7 +49,13 @@ public class PomodoroGUI {
     public static void main(String[] args) {
         new PomodoroGUI();
     }
-    
-    
-    
+
+    public void startTimer() {
+        System.out.println("Timer started");
+    }
+
+    public void stopTimer() {
+        System.out.println("Timer stopped");
+    }
+
 }
