@@ -54,7 +54,7 @@ public class PomodoroGUI {
 
     public void startTimer() {
         System.out.println("Timer started");
-        pomodoro.start();
+        new Thread(() -> pomodoro.start()).start();
     }
 
     public void stopTimer() {
