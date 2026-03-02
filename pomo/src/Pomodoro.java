@@ -21,6 +21,7 @@ public void start(){
         int mins = totalSeconds / 60;
         int secs = totalSeconds % 60;
         gui.updateLabel(String.format("%02d:%02d", mins, secs));
+        gui.updateCircle(totalSeconds);
     }
     System.out.println("Pomodoro session ended.");
 }

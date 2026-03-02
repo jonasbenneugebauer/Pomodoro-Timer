@@ -25,7 +25,7 @@ public class PomodoroGUI {
         startButton = new JButton("Start");
         stopButton = new JButton("Stop");
         panel = new JPanel();
-        pomodoro = new Pomodoro(0, 15, this); // Initialize with 25 minutes
+        pomodoro = new Pomodoro(0, 1, this); // Initialize with 25 minutes
 
         circlePanel = new CircleTimerPanel(25 * 60);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -41,14 +41,15 @@ public class PomodoroGUI {
         
 
         panel.add(Box.createVerticalGlue()); // Add some space at the top
-        panel.add(label);
+        panel.add(circlePanel);
         panel.add(Box.createVerticalStrut(20)); // Add some space between label and buttons
+        panel.add(label);
+        panel.add(Box.createVerticalStrut(20)); // Add some space between buttons
         panel.add(startButton);
-        panel.add(Box.createVerticalStrut(10)); // Add some space between buttons
+        panel.add(Box.createVerticalStrut(10));
         panel.add(stopButton);
         panel.add(Box.createVerticalGlue()); // Add some space at the bottom
         frame.add(panel);
-        panel.add(circlePanel);
         circlePanel.setPreferredSize(new Dimension(400, 400));
         frame.setVisible(true);
         frame.setSize(1080, 720);
@@ -79,6 +80,9 @@ public class PomodoroGUI {
     }
     public void updateLabel(String time) {
         label.setText(time);
+    }
+    public void updateCircle(int seconds) {
+        circlePanel.updateTime(seconds);
     }
 
 }

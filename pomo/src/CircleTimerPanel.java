@@ -21,12 +21,17 @@ public class CircleTimerPanel extends JPanel {
      @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        int diameter = Math.min(getWidth(), getHeight()) - 20; // Leave some padding
+        int x = (getWidth() - diameter) / 2;
+        int y = (getHeight() - diameter) / 2;
+
         g.setColor(new Color(255, 200, 200)); // Set color for the remaining time
-        g.fillOval(100, 100, 200, 200);
+        g.fillOval(x, y, diameter, diameter);
 
         int angle = (int) ((secondsLeft / 3600.0) * 360);
         g.setColor(new Color(255, 100, 100)); // Set color for the elapsed time
-        g.fillArc(100, 100, 200, 200, 90 - angle, angle);
+        g.fillArc(x, y, diameter, diameter, 90 - angle, angle);
     }
 
 }
