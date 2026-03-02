@@ -26,11 +26,11 @@ public class CircleTimerPanel extends JPanel {
         int x = (getWidth() - diameter) / 2;
         int y = (getHeight() - diameter) / 2;
 
-        g.setColor(new Color(255, 200, 200)); // Set color for the remaining time
+        g.setColor(new Color(65, 105, 225)); // Set color for the total time
         g.fillOval(x, y, diameter, diameter);
 
         int angle = (int) ((secondsLeft / 3600.0) * 360);
-        g.setColor(new Color(255, 100, 100)); // Set color for the elapsed time
+        g.setColor(new Color(135, 206, 235)); // Set color for the remaining time
         g.fillArc(x, y, diameter, diameter, 90 - angle, angle);
     }
 
