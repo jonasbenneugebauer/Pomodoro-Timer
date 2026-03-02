@@ -1,4 +1,6 @@
 import java.awt.Component;
+import java.awt.Dimension;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -15,6 +17,7 @@ public class PomodoroGUI {
     private JPanel panel;
     private Pomodoro pomodoro;
     private Thread timerThread;
+    private CircleTimerPanel circlePanel;
 
     public PomodoroGUI() {
         frame = new JFrame("Pomodoro Timer"); 
@@ -22,7 +25,9 @@ public class PomodoroGUI {
         startButton = new JButton("Start");
         stopButton = new JButton("Stop");
         panel = new JPanel();
-        pomodoro = new Pomodoro(0, 25, this); // Initialize with 25 minutes
+        pomodoro = new Pomodoro(0, 15, this); // Initialize with 25 minutes
+
+        circlePanel = new CircleTimerPanel(25 * 60);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -43,6 +48,8 @@ public class PomodoroGUI {
         panel.add(stopButton);
         panel.add(Box.createVerticalGlue()); // Add some space at the bottom
         frame.add(panel);
+        panel.add(circlePanel);
+        circlePanel.setPreferredSize(new Dimension(400, 400));
         frame.setVisible(true);
         frame.setSize(1080, 720);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
