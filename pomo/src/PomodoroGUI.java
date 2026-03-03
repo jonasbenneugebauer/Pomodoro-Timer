@@ -25,7 +25,7 @@ public class PomodoroGUI {
         startButton = new JButton("Start");
         stopButton = new JButton("Stop");
         panel = new JPanel();
-        pomodoro = new Pomodoro(0, 1, this); // Initialize with 25 minutes
+        pomodoro = new Pomodoro(0, 25, 4, this); // Initialize with 25 minutes and 4 cycles
 
         circlePanel = new CircleTimerPanel(25 * 60);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
