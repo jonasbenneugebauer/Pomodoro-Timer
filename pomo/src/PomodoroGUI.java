@@ -1,6 +1,5 @@
 import java.awt.Component;
 import java.awt.Dimension;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -21,7 +20,7 @@ public class PomodoroGUI {
 
     public PomodoroGUI() {
         frame = new JFrame("Pomodoro Timer"); 
-        label = new JLabel("00:00");
+        label = new JLabel("25:00");
         startButton = new JButton("Start");
         stopButton = new JButton("Stop");
         panel = new JPanel();
