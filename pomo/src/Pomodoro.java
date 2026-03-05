@@ -2,12 +2,15 @@ import java.awt.Toolkit;
 
 public class Pomodoro {
    private int totalSeconds;
+   private int workDuration;
+   private int breakDuration;
    private PomodoroGUI gui;
    private int cycles;
 
 
-    public Pomodoro (int seconds, int minutes, int cycles, PomodoroGUI gui){
-        this.totalSeconds = seconds + minutes * 60;
+    public Pomodoro (int workMinutes, int breakMinutes, int cycles, PomodoroGUI gui){
+        this.workDuration = workMinutes * 60;
+        this.breakDuration = breakMinutes * 60;
         this.gui = gui;
         this.cycles = cycles;
     }
@@ -15,9 +18,11 @@ public class Pomodoro {
 public void start(){
 
   for(int i = 0; i < cycles; i++){
-    countdown(25 * 60, "work");
+    gui.setTotalSeconds(workDuration);
+    countdown(workDuration, "work");
        Toolkit.getDefaultToolkit().beep();
-    countdown(5 * 60, "break");
+    gui.setTotalSeconds(breakDuration);
+    countdown(breakDuration, "break");
        Toolkit.getDefaultToolkit().beep();
 }
 System.out.println("All cycles completed!");
