@@ -20,6 +20,7 @@ public class PomodoroGUI {
     private CircleTimerPanel circlePanel;
     private JTextField workBlock;
     private JTextField breakBlock;
+    private JButton applyButton;
     
 
     public PomodoroGUI() {
@@ -32,6 +33,7 @@ public class PomodoroGUI {
 
         workBlock = new JTextField("25");
         breakBlock = new JTextField("5");
+        applyButton = new JButton("Apply");
 
         circlePanel = new CircleTimerPanel(25 * 60);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -43,12 +45,26 @@ public class PomodoroGUI {
         breakBlock.setAlignmentX(Component.CENTER_ALIGNMENT);
         workBlock.setMaximumSize(new Dimension(100, 30));
         breakBlock.setMaximumSize(new Dimension(100, 30));
+        applyButton.setMaximumSize(new Dimension(100, 30));
+        applyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         startButton.addActionListener(e -> startTimer()); 
             // Start the Pomodoro timer
         
         stopButton.addActionListener(e -> stopTimer()); 
             // Stop the Pomodoro timer
+
+        applyButton.addActionListener(e -> {
+            try {
+                int workMinutes = Integer.parseInt(workBlock.getText());
+                int breakMinutes = Integer.parseInt(breakBlock.getText());
+                pomodoro = new Pomodoro(workMinutes, breakMinutes, 4, this);
+                circlePanel.setTotalSeconds(workMinutes * 60);
+                label.setText(String.format("%02d:00", workMinutes));
+            } catch (NumberFormatException ex) {
+                System.out.println("Please enter valid numbers for work and break durations.");
+            }
+        });
         
 
         panel.add(Box.createVerticalGlue()); // Add some space at the top
@@ -60,21 +76,32 @@ public class PomodoroGUI {
         panel.add(Box.createVerticalStrut(10));
         panel.add(stopButton);
         panel.add(Box.createVerticalGlue()); // Add some space at the bottom
+        
+
+        JLabel workLabel = new JLabel("Work Duration (minutes):");
+        workLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(workLabel);
         panel.add(workBlock);
+
+        panel.add(Box.createVerticalStrut(5));
+
+        JLabel breakLabel = new JLabel("Break Duration (minutes):");
+        breakLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(breakLabel);
         panel.add(breakBlock);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(applyButton);
+
+        panel.add(Box.createVerticalGlue());
+
         frame.add(panel);
         circlePanel.setPreferredSize(new Dimension(400, 400));
         frame.setVisible(true);
         frame.setSize(1080, 720);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JLabel workLabel = new JLabel("Work Duration (minutes):");
-        JLabel breakLabel = new JLabel("Break Duration (minutes):");
+        
 
-        panel.add(workLabel);
-        panel.add(workBlock);
-        panel.add(breakLabel);
-        panel.add(breakBlock);
 
     }
 
