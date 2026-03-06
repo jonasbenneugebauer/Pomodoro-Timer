@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class PomodoroGUI {
 
@@ -17,6 +18,9 @@ public class PomodoroGUI {
     private Pomodoro pomodoro;
     private Thread timerThread;
     private CircleTimerPanel circlePanel;
+    private JTextField workBlock;
+    private JTextField breakBlock;
+    
 
     public PomodoroGUI() {
         frame = new JFrame("Pomodoro Timer"); 
@@ -26,11 +30,19 @@ public class PomodoroGUI {
         panel = new JPanel();
         pomodoro = new Pomodoro(0, 25, 4, this); // Initialize with 25 minutes and 4 cycles
 
+        workBlock = new JTextField("25");
+        breakBlock = new JTextField("5");
+
         circlePanel = new CircleTimerPanel(25 * 60);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         stopButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        workBlock.setAlignmentX(Component.CENTER_ALIGNMENT);
+        breakBlock.setAlignmentX(Component.CENTER_ALIGNMENT);
+        workBlock.setMaximumSize(new Dimension(100, 30));
+        breakBlock.setMaximumSize(new Dimension(100, 30));
 
         startButton.addActionListener(e -> startTimer()); 
             // Start the Pomodoro timer
@@ -48,13 +60,23 @@ public class PomodoroGUI {
         panel.add(Box.createVerticalStrut(10));
         panel.add(stopButton);
         panel.add(Box.createVerticalGlue()); // Add some space at the bottom
+        panel.add(workBlock);
+        panel.add(breakBlock);
         frame.add(panel);
         circlePanel.setPreferredSize(new Dimension(400, 400));
         frame.setVisible(true);
         frame.setSize(1080, 720);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    } 
+        JLabel workLabel = new JLabel("Work Duration (minutes):");
+        JLabel breakLabel = new JLabel("Break Duration (minutes):");
+
+        panel.add(workLabel);
+        panel.add(workBlock);
+        panel.add(breakLabel);
+        panel.add(breakBlock);
+
+    }
 
     public static void main(String[] args) {
         new PomodoroGUI();
