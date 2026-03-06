@@ -18,7 +18,7 @@ public class CircleTimerPanel extends JPanel {
         repaint(); // Trigger a repaint to update the circle
     }
 
-   @Override
+@Override
 protected void paintComponent(Graphics g) {
     super.paintComponent(g);
 
@@ -26,13 +26,14 @@ protected void paintComponent(Graphics g) {
     int x = (getWidth() - diameter) / 2;
     int y = (getHeight() - diameter) / 2;
 
-    // 1. Hellblauer Hintergrund (voller Kreis - abgelaufene Zeit)
-    g.setColor(new Color(200, 220, 255));  // Ganz hell
+    // Heller Hintergrund (leer)
+    g.setColor(new Color(200, 220, 255));
     g.fillOval(x, y, diameter, diameter);
 
-    // 2. Dunkelblauer Bogen (verbleibende Zeit)
-    int angle = (int) ((secondsLeft / (double) totalSeconds) * 360);
-    g.setColor(new Color(65, 105, 225));   // Dunkel
+    // Dunkler Bogen (abgelaufene Zeit - wächst!)
+    int elapsedSeconds = totalSeconds - secondsLeft;  // ← NEU!
+    int angle = (int) ((elapsedSeconds / (double) totalSeconds) * 360);
+    g.setColor(new Color(65, 105, 225));
     g.fillArc(x, y, diameter, diameter, 90, -angle);
 }
     public void setTotalSeconds(int total) {
