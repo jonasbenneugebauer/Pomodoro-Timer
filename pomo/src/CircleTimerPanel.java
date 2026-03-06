@@ -18,20 +18,26 @@ public class CircleTimerPanel extends JPanel {
         repaint(); // Trigger a repaint to update the circle
     }
 
-     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+   @Override
+protected void paintComponent(Graphics g) {
+    super.paintComponent(g);
 
-        int diameter = Math.min(getWidth(), getHeight()) - 20; // Leave some padding
-        int x = (getWidth() - diameter) / 2;
-        int y = (getHeight() - diameter) / 2;
+    int diameter = Math.min(getWidth(), getHeight()) - 20;
+    int x = (getWidth() - diameter) / 2;
+    int y = (getHeight() - diameter) / 2;
 
-        g.setColor(new Color(65, 105, 225)); // Set color for the total time
-        g.fillOval(x, y, diameter, diameter);
+    // 1. Hellblauer Hintergrund (voller Kreis - abgelaufene Zeit)
+    g.setColor(new Color(200, 220, 255));  // Ganz hell
+    g.fillOval(x, y, diameter, diameter);
 
-        int angle = (int) ((secondsLeft / 3600.0) * 360);
-        g.setColor(new Color(135, 206, 235)); // Set color for the remaining time
-        g.fillArc(x, y, diameter, diameter, 90 - angle, angle);
+    // 2. Dunkelblauer Bogen (verbleibende Zeit)
+    int angle = (int) ((secondsLeft / (double) totalSeconds) * 360);
+    g.setColor(new Color(65, 105, 225));   // Dunkel
+    g.fillArc(x, y, diameter, diameter, 90, -angle);
+}
+    public void setTotalSeconds(int total) {
+        this.totalSeconds = total;
+    
     }
 
 }

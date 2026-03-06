@@ -28,7 +28,7 @@ public class PomodoroGUI {
         startButton = new JButton("Start");
         stopButton = new JButton("Stop");
         panel = new JPanel();
-        pomodoro = new Pomodoro(0, 25, 4, this); // Initialize with 25 minutes and 4 cycles
+        pomodoro = new Pomodoro(1, 1, 4, this); // Initialize with 25 minutes and 4 cycles
 
         workBlock = new JTextField("25");
         breakBlock = new JTextField("5");
@@ -104,6 +104,10 @@ public class PomodoroGUI {
     }
     public void updateCircle(int seconds) {
         circlePanel.updateTime(seconds);
+    }
+
+    public void setTotalSeconds(int total) {
+        circlePanel.setTotalSeconds(total);
     }
 
 }
