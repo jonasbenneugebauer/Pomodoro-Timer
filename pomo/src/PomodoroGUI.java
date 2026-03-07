@@ -21,10 +21,9 @@ public class PomodoroGUI {
     private JTextField workBlock;
     private JTextField breakBlock;
     private JButton applyButton;
-    
 
     public PomodoroGUI() {
-        frame = new JFrame("Pomodoro Timer"); 
+        frame = new JFrame("Pomodoro Timer");
         label = new JLabel("25:00");
         startButton = new JButton("Start");
         stopButton = new JButton("Stop");
@@ -35,7 +34,9 @@ public class PomodoroGUI {
         breakBlock = new JTextField("5");
         applyButton = new JButton("Apply");
 
-        circlePanel = new CircleTimerPanel(25 * 60);
+        int initialWork = Integer.parseInt(workBlock.getText());
+        circlePanel = new CircleTimerPanel(initialWork * 60); // Initialize with work duration
+
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -48,24 +49,25 @@ public class PomodoroGUI {
         applyButton.setMaximumSize(new Dimension(100, 30));
         applyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        startButton.addActionListener(e -> startTimer()); 
-            // Start the Pomodoro timer
-        
-        stopButton.addActionListener(e -> stopTimer()); 
-            // Stop the Pomodoro timer
+        startButton.addActionListener(e -> startTimer());
+        stopButton.addActionListener(e -> {
+            // statt thread.interrupt() jetzt in Pomodoro die Phase überspringen
+            if (pomodoro != null)
+                pomodoro.stopCurrentPhase();
+            applyButton.setEnabled(true); // Apply nach Stop wieder erlauben (wirkt auf nächste Phase)
+        });
 
         applyButton.addActionListener(e -> {
             try {
-                int workMinutes = Integer.parseInt(workBlock.getText());
-                int breakMinutes = Integer.parseInt(breakBlock.getText());
-                pomodoro = new Pomodoro(workMinutes, breakMinutes, 4, this);
-                circlePanel.setTotalSeconds(workMinutes * 60);
-                label.setText(String.format("%02d:00", workMinutes));
+                int newWork = Integer.parseInt(workBlock.getText());
+                int newBreak = Integer.parseInt(breakBlock.getText());
+                // gilt für kommende Phasen (nicht für gerade laufende)
+                pomodoro.setDurations(newWork, newBreak);
+                label.setText(String.format("%02d:00", newWork));
             } catch (NumberFormatException ex) {
                 System.out.println("Please enter valid numbers for work and break durations.");
             }
         });
-        
 
         panel.add(Box.createVerticalGlue()); // Add some space at the top
         panel.add(circlePanel);
@@ -76,7 +78,6 @@ public class PomodoroGUI {
         panel.add(Box.createVerticalStrut(10));
         panel.add(stopButton);
         panel.add(Box.createVerticalGlue()); // Add some space at the bottom
-        
 
         JLabel workLabel = new JLabel("Work Duration (minutes):");
         workLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -100,9 +101,6 @@ public class PomodoroGUI {
         frame.setSize(1080, 720);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        
-
-
     }
 
     public static void main(String[] args) {
@@ -110,27 +108,38 @@ public class PomodoroGUI {
     }
 
     public void startTimer() {
-        if(timerThread != null && timerThread.isAlive()) {
-            
+        if (timerThread != null && timerThread.isAlive()) {
             System.out.println("Timer is already running.");
             return;
         }
+        int workMinutes = Integer.parseInt((workBlock.getText()));
+        int breakMinutes = Integer.parseInt((breakBlock.getText()));
+
+        pomodoro = new Pomodoro(workMinutes, breakMinutes, 4, this);
+        circlePanel.setTotalSeconds(workMinutes * 60);
+
+        applyButton.setEnabled(false); // Disable apply button while timer is running
         System.out.println("Timer started");
         timerThread = new Thread(() -> pomodoro.start());
         timerThread.start();
-        applyButton.setEnabled(false); // Disable apply button while timer is running
     }
 
     public void stopTimer() {
         System.out.println("Timer stopped");
-        if(timerThread != null && timerThread.isAlive()) {
+        if (timerThread != null && timerThread.isAlive()) {
             timerThread.interrupt();
             applyButton.setEnabled(true); // Re-enable apply button when timer is stopped
         }
+        int workMinutes = Integer.parseInt((workBlock.getText()));
+        label.setText(String.format("%02d:00", workMinutes));
+        circlePanel.updateTime(workMinutes * 60);
+        circlePanel.setTotalSeconds(workMinutes * 60);
     }
+
     public void updateLabel(String time) {
         label.setText(time);
     }
+
     public void updateCircle(int seconds) {
         circlePanel.updateTime(seconds);
     }
