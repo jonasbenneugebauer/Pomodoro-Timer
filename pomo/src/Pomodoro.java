@@ -27,6 +27,7 @@ public void start(){
 }
 System.out.println("All cycles completed!");
 System.out.println("Pomodoro session ended.");
+gui.enableApplyButton(); // Re-enable the apply button after all cycles are completed
 }
 
 

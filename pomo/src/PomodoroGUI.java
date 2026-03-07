@@ -29,7 +29,7 @@ public class PomodoroGUI {
         startButton = new JButton("Start");
         stopButton = new JButton("Stop");
         panel = new JPanel();
-        pomodoro = new Pomodoro(1, 1, 4, this); // Initialize with 25 minutes and 4 cycles
+        pomodoro = new Pomodoro(25, 5, 4, this); // Initialize with 25 minutes and 4 cycles
 
         workBlock = new JTextField("25");
         breakBlock = new JTextField("5");
@@ -118,12 +118,14 @@ public class PomodoroGUI {
         System.out.println("Timer started");
         timerThread = new Thread(() -> pomodoro.start());
         timerThread.start();
+        applyButton.setEnabled(false); // Disable apply button while timer is running
     }
 
     public void stopTimer() {
         System.out.println("Timer stopped");
         if(timerThread != null && timerThread.isAlive()) {
             timerThread.interrupt();
+            applyButton.setEnabled(true); // Re-enable apply button when timer is stopped
         }
     }
     public void updateLabel(String time) {
@@ -135,6 +137,10 @@ public class PomodoroGUI {
 
     public void setTotalSeconds(int total) {
         circlePanel.setTotalSeconds(total);
+    }
+
+    public void enableApplyButton() {
+        applyButton.setEnabled(true);
     }
 
 }
